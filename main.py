@@ -38,8 +38,8 @@ app.include_router(overtime.router)
 app.include_router(calendar.router)
 
 @app.get("/")
-def read_root():
-    return templates.TemplateResponse("dashboard.html", {"request": {}})
+def read_root(request):
+    return templates.TemplateResponse("dashboard.html", {"request": request})
 
 @app.get("/health")
 def health_check():
