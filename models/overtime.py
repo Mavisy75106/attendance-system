@@ -21,7 +21,7 @@ class OvertimeRequest(Base):
     employee_id: Mapped[int] = mapped_column(
         ForeignKey("employees.id", ondelete="CASCADE"), nullable=False
     )
-    date: Mapped[date] = mapped_column(Date, nullable=False)
+    overtime_date: Mapped[date] = mapped_column(Date, nullable=False)
     start_time: Mapped[time] = mapped_column(Time, nullable=False)
     end_time: Mapped[time] = mapped_column(Time, nullable=False)
     reason: Mapped[str] = mapped_column(String(500), nullable=True, default=None)

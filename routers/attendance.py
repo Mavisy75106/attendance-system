@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import date, time
-from ..database import get_db
-from ..schemas.attendance import (
+from database import get_db
+from schemas.attendance import (
     AttendanceRecordCreate, AttendanceRecordUpdate, AttendanceRecordRead
 )
-from ..services.attendance_service import (
+from services.attendance_service import (
     check_in, check_out, get_attendance_records, get_attendance_by_employee
 )
 

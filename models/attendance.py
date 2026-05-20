@@ -13,7 +13,7 @@ class AttendanceRecord(Base):
     employee_id: Mapped[int] = mapped_column(
         ForeignKey("employees.id", ondelete="CASCADE"), nullable=False
     )
-    date: Mapped[date] = mapped_column(Date, nullable=False)
+    record_date: Mapped[date] = mapped_column(Date, nullable=False)
     clock_in: Mapped[time] = mapped_column(Time, nullable=True)
     clock_out: Mapped[time] = mapped_column(Time, nullable=True)
     status: Mapped[str] = mapped_column(

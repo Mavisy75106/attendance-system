@@ -1,8 +1,6 @@
-from datetime import date, datetime
+from datetime import date
 
 from pydantic import BaseModel, EmailStr, Field
-
-from attendance_system.database import get_sqlalchemy_type
 
 
 class EmployeeBase(BaseModel):

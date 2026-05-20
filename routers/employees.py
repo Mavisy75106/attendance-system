@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List
-from ..database import get_db
-from ..schemas.employee import (
+from database import get_db
+from schemas.employee import (
     EmployeeCreate, EmployeeUpdate, EmployeeRead, EmployeeList
 )
-from ..services.employee_service import (
+from services.employee_service import (
     create_employee, get_employee, list_employees, update_employee, delete_employee
 )
 
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/employees", tags=["員工管理"])
 def create_new_employee(emp: EmployeeCreate, db: Session = Depends(get_db)):
     return create_employee(db, emp)
 
-@router.get("/", response_model=List[EmployeeRead])
+@router.get("/", response_model=EmployeeList)
 def get_employees(
     search: str = Query(None, description="搜尋姓名或工號"),
     department: str = Query(None, description="部門篩選"),

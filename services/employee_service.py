@@ -4,8 +4,8 @@ from datetime import datetime
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from attendance_system.models.employee import Employee
-from attendance_system.schemas.employee import (
+from models.employee import Employee
+from schemas.employee import (
     EmployeeCreate,
     EmployeeUpdate,
     EmployeeRead,

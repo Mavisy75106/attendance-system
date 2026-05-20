@@ -28,7 +28,7 @@ class Employee(Base):
         back_populates="employee", cascade="all, delete-orphan"
     )
     leave_requests: Mapped[list["LeaveRequest"]] = relationship(
-        back_populates="employee", cascade="all, delete-orphan"
+        back_populates="employee", cascade="all, delete-orphan", foreign_keys="[LeaveRequest.employee_id]"
     )
     overtime_requests: Mapped[list["OvertimeRequest"]] = relationship(
         back_populates="employee", cascade="all, delete-orphan"

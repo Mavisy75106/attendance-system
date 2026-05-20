@@ -2,12 +2,12 @@
 
 | 版本 | 日期 | 作者 | 說明 |
 |------|------|------|------|
-| 1.0.0 | 2026-05-20 | Mavis | 初始版本 |
+| 1.0.1 | 2026-05-20 | Mavis | 修復 Windows 安裝問題、新增 requirements.txt、改用檔案型 SQLite |
 
 ## 環境需求
 - **Python**: 3.10 或更高版本
 - **作業系統**: Linux, macOS, Windows (WSL 推薦)
-- **資料庫**: SQLite 3 (內建於 Python，無需額外安裝)
+- **資料庫**: SQLite 3 (預設，內建於 Python)
 - **套件管理**: `pip` 或 `uv`
 
 ## 步驟 1: 複製專案
@@ -18,20 +18,34 @@ cd attendance-system
 
 ## 步驟 2: 建立虛擬環境
 ```bash
+# Linux / macOS
 python3 -m venv venv
-source venv/bin/activate  # Linux/macOS
-# 或 venv\Scripts\activate  # Windows
+source venv/bin/activate
+
+# Windows
+py -3 -m venv venv
+venv\Scripts\activate
 ```
+
+**Windows 注意：**
+- 若 `py` 命令找不到，請重新執行 Python 安裝程式並勾選 "Add Python to PATH"
+- 虛擬環境啟用後，命令列應出現 `(venv)` 前綴
 
 ## 步驟 3: 安裝依賴套件
 ```bash
 pip install -r requirements.txt
 ```
 
+**Windows 常見問題：**
+- 若遇到編譯錯誤，請安裝 [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+- 建議先執行 `pip install --upgrade pip` 更新 pip
+
 ## 步驟 4: 環境變數設定 (可選)
 若需切換資料庫，請建立 `.env` 檔案：
 ```env
-DATABASE_URL=postgresql://user:password@localhost/dbname
+DATABASE_URL=sqlite:///attendance.db
+# 或 PostgreSQL:
+# DATABASE_URL=postgresql://user:password@localhost/dbname
 SECRET_KEY=your-secret-key-here
 DEBUG=True
 ```
@@ -48,17 +62,33 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 伺服器啟動後，於瀏覽器開啟 `http://localhost:8000`。
 
+## Windows 完整安裝範例
+```bash
+# 1. 複製專案
+git clone https://github.com/Mavisy75106/attendance-system.git
+cd attendance-system
+
+# 2. 建立虛擬環境
+py -3 -m venv venv
+venv\Scripts\activate
+
+# 3. 安裝套件
+pip install -r requirements.txt
+
+# 4. 初始化資料庫
+python seed_data.py
+
+# 5. 啟動伺服器
+uvicorn main:app --reload
+```
+
 ## 常見問題 (FAQ)
 
 ### Q1: 啟動時報 `ModuleNotFoundError`
-請確認已啟用虛擬環境：`source venv/bin/activate`，並確認 `venv/lib/python3.x/site-packages` 已包含所需套件。
+請確認已啟用虛擬環境：`source venv/bin/activate` (Linux/macOS) 或 `venv\Scripts\activate` (Windows)，並確認 `venv/lib/python3.x/site-packages` (或 `venv\Lib\site-packages` on Windows) 已包含所需套件。
 
 ### Q2: 資料庫檔案無法寫入
-檢查資料夾權限，或手動建立資料夾：
-```bash
-mkdir -p data
-chmod 755 data
-```
+檢查資料夾權限。預設 SQLite 資料庫檔案為 `attendance.db`，可透過 `DATABASE_PATH` 環境變數修改路徑。
 
 ### Q3: 如何切換到 PostgreSQL？
 修改 `.env` 中的 `DATABASE_URL`，並安裝 `psycopg2-binary`：

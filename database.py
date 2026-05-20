@@ -1,14 +1,12 @@
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 import os
 
-DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///:memory:")
+# Use persistent SQLite file instead of in-memory
+db_path = os.environ.get("DATABASE_PATH", "attendance.db")
+DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{db_path}")
 
-if not os.environ.get("DATABASE_URL"):
-    # Ensure SQLite path exists
-    db_path = DATABASE_URL.replace("sqlite:///", "")
-    os.makedirs(os.path.dirname(db_path) if os.path.dirname(db_path) else ".", exist_ok=True)
+os.makedirs(os.path.dirname(db_path) or ".", exist_ok=True)
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

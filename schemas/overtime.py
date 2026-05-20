@@ -1,14 +1,15 @@
-from datetime import date, time
+from datetime import date as date_type, time as time_type
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
 
 class OvertimeRequestBase(BaseModel):
     employee_id: int = Field(..., gt=0)
-    date: date = Field(...)
-    start_time: time = Field(...)
-    end_time: time = Field(...)
-    reason: str | None = Field(None, max_length=500)
+    overtime_date: date_type = Field(...)
+    start_time: time_type = Field(...)
+    end_time: time_type = Field(...)
+    reason: Optional[str] = Field(None, max_length=500)
     status: str = Field(default="pending", pattern="^(pending|approved|rejected)$")
 
     def model_validator(self, mode="before") -> "OvertimeRequestBase":
@@ -33,21 +34,21 @@ class OvertimeRequestCreate(OvertimeRequestBase):
 
 class OvertimeRequestUpdate(BaseModel):
     """Schema for updating an existing overtime request. All fields optional."""
-    date: date | None = None
-    start_time: time | None = None
-    end_time: time | None = None
-    reason: str | None = Field(None, max_length=500)
-    status: str | None = Field(None, pattern="^(pending|approved|rejected)$")
+    overtime_date: date_type | None = None
+    start_time: time_type | None = None
+    end_time: time_type | None = None
+    reason: Optional[str] = Field(None, max_length=500)
+    status: Optional[str] = Field(None, pattern="^(pending|approved|rejected)$")
 
 
 class OvertimeRequestRead(BaseModel):
     """Schema for reading overtime request data."""
     id: int
     employee_id: int
-    date: date
-    start_time: time
-    end_time: time
-    reason: str | None
+    overtime_date: date_type
+    start_time: time_type
+    end_time: time_type
+    reason: Optional[str] = None
     hours: float
     status: str
 

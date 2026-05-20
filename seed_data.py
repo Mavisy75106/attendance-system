@@ -32,7 +32,8 @@ def seed_db():
                 position="主任",
                 phone="0912-345-678",
                 email="wang@david.com",
-                status="active"
+                status="active",
+                hire_date=date(2024, 1, 15)
             ),
             Employee(
                 name="李小美",
@@ -41,7 +42,8 @@ def seed_db():
                 position="專員",
                 phone="0912-345-679",
                 email="li@david.com",
-                status="active"
+                status="active",
+                hire_date=date(2024, 3, 1)
             ),
             Employee(
                 name="張志豪",
@@ -50,7 +52,8 @@ def seed_db():
                 position="專員",
                 phone="0912-345-680",
                 email="zhang@david.com",
-                status="active"
+                status="active",
+                hire_date=date(2024, 6, 10)
             ),
         ]
         

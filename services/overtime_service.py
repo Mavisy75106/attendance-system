@@ -3,8 +3,8 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from attendance_system.models.overtime import OvertimeRequest
-from attendance_system.schemas.overtime import OvertimeRequestRead, OvertimeRequestCreate
+from models.overtime import OvertimeRequest
+from schemas.overtime import OvertimeRequestRead, OvertimeRequestCreate
 
 
 def create_overtime_request(db: Session, overtime_data: OvertimeRequestCreate) -> OvertimeRequestRead:

@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import date
-from ..database import get_db
-from ..schemas.leave import (
+from database import get_db
+from schemas.leave import (
     LeaveRequestCreate, LeaveRequestUpdate, LeaveRequestRead
 )
-from ..services.leave_service import (
+from services.leave_service import (
     create_leave_request, approve_leave, reject_leave, get_leave_requests, get_leave_balance
 )
 

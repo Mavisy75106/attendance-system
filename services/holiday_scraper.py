@@ -8,7 +8,7 @@ The scraper is designed to be mockable for testing purposes.
 """
 
 import logging
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 from urllib.parse import urljoin
 
@@ -16,7 +16,7 @@ import requests
 from bs4 import BeautifulSoup
 from sqlalchemy.orm import Session
 
-from attendance_system.models.calendar_event import CalendarEvent
+from models.calendar_event import CalendarEvent
 
 logger = logging.getLogger(__name__)
 

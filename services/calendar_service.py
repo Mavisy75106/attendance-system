@@ -4,8 +4,8 @@ from datetime import date, datetime
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from attendance_system.models.calendar_event import CalendarEvent
-from attendance_system.schemas.calendar_event import (
+from models.calendar_event import CalendarEvent
+from schemas.calendar_event import (
     CalendarEventCreate,
     CalendarEventRead,
 )

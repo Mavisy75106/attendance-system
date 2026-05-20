@@ -3,8 +3,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from .database import engine, Base
-from .routers import employees, attendance, leaves, overtime, calendar
+from database import engine, Base
+from routers import employees, attendance, leaves, overtime, calendar
 import logging
 
 logging.basicConfig(level=logging.INFO)

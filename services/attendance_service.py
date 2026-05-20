@@ -4,8 +4,8 @@ from datetime import datetime, time, date
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from attendance_system.models.attendance import AttendanceRecord
-from attendance_system.schemas.attendance import (
+from models.attendance import AttendanceRecord
+from schemas.attendance import (
     AttendanceRecordCreate,
     AttendanceRecordRead,
 )
@@ -44,13 +44,13 @@ def get_attendance_records(
     query = db.query(AttendanceRecord)
     
     if start_date:
-        query = query.filter(AttendanceRecord.date >= start_date)
+        query = query.filter(AttendanceRecord.record_date >= start_date)
     if end_date:
-        query = query.filter(AttendanceRecord.date <= end_date)
+        query = query.filter(AttendanceRecord.record_date <= end_date)
     if employee_id:
         query = query.filter(AttendanceRecord.employee_id == employee_id)
     
-    records = query.order_by(AttendanceRecord.date.desc()).all()
+    records = query.order_by(AttendanceRecord.record_date.desc()).all()
     return [AttendanceRecordRead.model_validate(r) for r in records]
 
 
@@ -58,7 +58,7 @@ def check_in(db: Session, employee_id: int, check_date: date) -> AttendanceRecor
     """Record a check-in for an employee on a given date. Sets late status if after 09:30."""
     employee_date = db.query(AttendanceRecord).filter(
         AttendanceRecord.employee_id == employee_id,
-        AttendanceRecord.date == check_date,
+        AttendanceRecord.record_date == check_date,
     ).first()
 
     clock_in = datetime.utcnow().time()
@@ -91,7 +91,7 @@ def check_out(db: Session, employee_id: int, check_date: date) -> AttendanceReco
     """Record a check-out for an employee on a given date. Sets early_absent if before 18:00."""
     record = db.query(AttendanceRecord).filter(
         AttendanceRecord.employee_id == employee_id,
-        AttendanceRecord.date == check_date,
+        AttendanceRecord.record_date == check_date,
     ).first()
 
     if not record:
@@ -125,15 +125,15 @@ def get_daily_attendance(
 ) -> dict:
     """Get attendance records for a specific date, optionally filtered by department."""
     if target_date is None:
-        target_date = datetime.utcnow().date()
+        target_date = datetime.utcnow().record_date()
 
     query = db.query(AttendanceRecord).filter(
-        AttendanceRecord.date == target_date,
+        AttendanceRecord.record_date == target_date,
     )
 
     if department:
         # Join with employees to filter by department
-        from attendance_system.models.employee import Employee
+        from models.employee import Employee
         query = query.join(Employee).filter(
             Employee.department.ilike(f"%{department}%")
         )
@@ -159,7 +159,7 @@ def get_attendance_by_employee(
 ) -> dict:
     """Get attendance records for a specific employee with optional date range filtering."""
     # Verify employee exists
-    from attendance_system.models.employee import Employee
+    from models.employee import Employee
     employee = db.query(Employee).filter(Employee.id == employee_id).first()
     if not employee:
         raise HTTPException(
@@ -172,14 +172,14 @@ def get_attendance_by_employee(
     )
 
     if start_date:
-        query = query.filter(AttendanceRecord.date >= start_date)
+        query = query.filter(AttendanceRecord.record_date >= start_date)
     if end_date:
-        query = query.filter(AttendanceRecord.date <= end_date)
+        query = query.filter(AttendanceRecord.record_date <= end_date)
 
     total = query.count()
     items = (
         query
-        .order_by(AttendanceRecord.date.desc())
+        .order_by(AttendanceRecord.record_date.desc())
         .offset(skip)
         .limit(limit)
         .all()

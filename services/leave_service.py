@@ -4,8 +4,8 @@ from datetime import date, datetime, timedelta
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from attendance_system.models.leave import LeaveRequest
-from attendance_system.schemas.leave import LeaveRequestRead, LeaveRequestCreate
+from models.leave import LeaveRequest
+from schemas.leave import LeaveRequestRead, LeaveRequestCreate
 
 
 # Annual leave days per year - configurable constant
@@ -80,7 +80,7 @@ def get_leave_balance(
     db: Session, employee_id: int, year: int
 ) -> dict:
     """Calculate remaining leave balance for an employee in a given year."""
-    from attendance_system.models.employee import Employee
+    from models.employee import Employee
     employee = db.query(Employee).filter(Employee.id == employee_id).first()
     if not employee:
         raise HTTPException(

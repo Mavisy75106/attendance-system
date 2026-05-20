@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import date
-from ..database import get_db
-from ..schemas.overtime import (
+from database import get_db
+from schemas.overtime import (
     OvertimeRequestCreate, OvertimeRequestUpdate, OvertimeRequestRead
 )
-from ..services.overtime_service import (
+from services.overtime_service import (
     create_overtime_request, approve_overtime, reject_overtime, get_overtime_requests
 )
 
